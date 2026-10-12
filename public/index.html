@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro Focus Timer - Tối Ưu Hóa Hiệu Suất Làm Việc</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-icon">🍅</span>
+        <h1>Pomodoro Focus</h1>
+      </div>
+      <button id="settings-toggle-btn" class="icon-btn" title="Cài đặt cấu hình" aria-label="Cài đặt">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </button>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="main-content">
+      
+      <!-- Left Column: Timer -->
+      <section class="timer-section card">
+        <!-- Mode Selector Tabs -->
+        <div class="mode-tabs">
+          <button class="tab-btn active" data-mode="focus">Tập trung</button>
+          <button class="tab-btn" data-mode="shortBreak">Nghỉ ngắn</button>
+          <button class="tab-btn" data-mode="longBreak">Nghỉ dài</button>
+        </div>
+
+        <!-- Circular Progress & Timer Display -->
+        <div class="timer-display-container">
+          <svg class="progress-ring" width="280" height="280">
+            <circle class="progress-ring__background" stroke="#eef2f6" stroke-width="8" fill="transparent" r="130" cx="140" cy="140"/>
+            <circle class="progress-ring__circle" stroke="#ff5a5f" stroke-width="10" stroke-linecap="round" fill="transparent" r="130" cx="140" cy="140"/>
+          </svg>
+          <div class="timer-text-wrapper">
+            <span id="timer-countdown" class="timer-countdown">25:00</span>
+            <span id="timer-status-label" class="timer-status-label">Sẵn sàng tập trung</span>
+          </div>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="timer-controls">
+          <button id="btn-start" class="btn btn-primary">Bắt đầu</button>
+          <button id="btn-pause" class="btn btn-secondary" disabled>Tạm dừng</button>
+          <button id="btn-reset" class="btn btn-outline">Đặt lại</button>
+        </div>
+      </section>
+
+      <!-- Right Column: History & Stats -->
+      <section class="history-section card">
+        <div class="section-header">
+          <h2>Lịch sử phiên tập</h2>
+          <button id="btn-clear-history" class="btn-text" title="Xóa toàn bộ lịch sử">Xóa tất cả</button>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-overview">
+          <div class="stat-box">
+            <span class="stat-value" id="stat-total-sessions">0</span>
+            <span class="stat-label">Tổng số phiên</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-value" id="stat-total-minutes">0</span>
+            <span class="stat-label">Số phút tập trung</span>
+          </div>
+        </div>
+
+        <!-- History List -->
+        <div class="history-list-container">
+          <!-- Empty State -->
+          <div id="history-empty-state" class="empty-state">
+            <div class="empty-icon">🎯</div>
+            <p class="empty-title">Chưa có phiên tập trung nào</p>
+            <p class="empty-desc">Hãy hoàn thành phiên Pomodoro đầu tiên của bạn để ghi nhận lịch sử tại đây!</p>
+          </div>
+          <!-- List Items -->
+          <ul id="history-list" class="history-list hidden"></ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal-overlay hidden">
+      <div class="modal-content card">
+        <div class="modal-header">
+          <h3>Cấu hình thời gian (Phút)</h3>
+          <button id="settings-close-btn" class="icon-btn" aria-label="Đóng">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <form id="settings-form" class="settings-form">
+          <div class="form-group">
+            <label for="input-focus">Tập trung (Focus)</label>
+            <input type="number" id="input-focus" min="1" max="180" value="25" required>
+          </div>
+          <div class="form-group">
+            <label for="input-short">Nghỉ ngắn (Short Break)</label>
+            <input type="number" id="input-short" min="1" max="60" value="5" required>
+          </div>
+          <div class="form-group">
+            <label for="input-long">Nghỉ dài (Long Break)</label>
+            <input type="number" id="input-long" min="1" max="120" value="15" required>
+          </div>
+          <div id="settings-error-msg" class="error-message hidden">Vui lòng nhập số phút hợp lệ (từ 1 đến giới hạn tối đa).</div>
+          <div class="modal-actions">
+            <button type="button" id="btn-settings-reset" class="btn btn-outline">Khôi phục mặc định</button>
+            <button type="submit" class="btn btn-primary">Lưu cấu hình</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Audio Element for Alarm -->
+    <audio id="alarm-sound" preload="auto">
+      <source src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg" type="audio/ogg">
+      <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+```
+
+---
