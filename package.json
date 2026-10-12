@@ -1,0 +1,27 @@
+{
+  "name": "pomodoro-focus-timer",
+  "version": "1.0.0",
+  "description": "A beautiful, responsive Pomodoro Focus Timer with history and custom settings.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "playwright test"
+  },
+  "keywords": [
+    "pomodoro",
+    "timer",
+    "focus",
+    "productivity"
+  ],
+  "author": "Vibecode Senior Full-Stack Developer",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.42.1"
+  }
+}
+```
+
+---
